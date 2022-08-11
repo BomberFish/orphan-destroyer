@@ -7,7 +7,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
-	console.log('Ready!');
+	console.log('Bot ready!');
   client.user.setPresence({
     game: {
      name: 'with the discord.js library',
@@ -19,6 +19,7 @@ client.once('ready', () => {
 
 // Login to Discord with your client's token
 client.login(token);
+console.log("Logged in!")
 
 const commands = [
 	new SlashCommandBuilder().setName('ping').setDescription('pong'),
@@ -33,6 +34,7 @@ rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
 	.catch(console.error);
 
 client.on('interactionCreate', async interaction => {
+  console.log("Received a command")
 	if (!interaction.isChatInputCommand()) return;
 
 	const { commandName } = interaction;
