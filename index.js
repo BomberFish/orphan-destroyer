@@ -49,6 +49,6 @@ client.on('interactionCreate', async interaction => {
 	} else if (commandName === 'status') {
 		await interaction.reply(`Bot is **online**\nRunning on ${os.platform()} ${os.release()}, node.js ${process.version}`);
 	} else if (commandName === 'info') {
-		await interaction.reply(`**Orphan Destroyer**\nCreated by BomberFish\nLicensed under the GNU Affero GPL. Source code available at https://github.com/BomberFish/orphan-destroyer`);
+		await interaction.reply(`**Orphan Destroyer**\nCreated by BomberFish\nLicensed under the GNU Affero GPL v3. Source code available at https://github.com/BomberFish/orphan-destroyer`);
 	} 
 });
