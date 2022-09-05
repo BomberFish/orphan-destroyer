@@ -2,7 +2,7 @@ const { SlashCommandBuilder, Routes, Client, MessageAttachment, GatewayIntentBit
 const { REST } = require('@discordjs/rest');
 const { clientId, guildId, token } = require('./auth.json');
 const os = require('os');
-const fs = require("fs")
+const fs = require("fs");
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildIntegrations, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.MessageContent] });
@@ -10,6 +10,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
 	console.log('Bot ready!');
+	// why doesnt this work ;(
   client.user.setPresence({
     game: {
      name: 'with the discord.js library',
@@ -34,7 +35,7 @@ const commands = [
 const rest = new REST({ version: '10' }).setToken(token);
 console.log("Registering slash commands...")
 rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
-	.then(() => console.log('Successfully registered!'))
+	.then(() => console.log('Successfully registered slash commands!'))
 	.catch(console.error);
 
 client.on('interactionCreate', async interaction => {
@@ -48,7 +49,7 @@ client.on('interactionCreate', async interaction => {
 	} else if (commandName === 'server') {
 		await interaction.reply(`Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}\nCreated on: ${interaction.guild.createdAt}\nID: ${interaction.guild.id}`);
 	} else if (commandName === 'status') {
-		await interaction.reply(`Bot is **online**\nRunning on ${os.platform()} ${os.release()}, node.js ${process.version}`);
+		await interaction.reply(`Bot is **online**\nRunning on ${os.platform()} ${os.release()}, node.js ${process.version}\nWebsocket heartbeat (ping): ${client.ws.ping}ms.\n`	);
 	} else if (commandName === 'info') {
 		await interaction.reply(`**Orphan Destroyer**\nCreated by BomberFish\nLicensed under the GNU Affero GPL v3. Source code available at https://github.com/BomberFish/orphan-destroyer`);
 	} 
