@@ -1,10 +1,11 @@
-const { SlashCommandBuilder, Routes, Client, MessageAttachment, GatewayIntentBits } = require('discord.js');
+const { SlashCommandBuilder, Routes, Client, MessageAttachment, GatewayIntentBits} = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { clientId, guildId, token } = require('./auth.json');
 const os = require('os');
+const fs = require("fs")
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildIntegrations, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.MessageContent] });
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
@@ -20,7 +21,7 @@ client.once('ready', () => {
 
 // Login to Discord with your client's token
 client.login(token);
-console.log("Logged in!")
+console.log(`Logged in!`)
 
 const commands = [
 	new SlashCommandBuilder().setName('ping').setDescription('pong'),
@@ -31,9 +32,9 @@ const commands = [
 	.map(command => command.toJSON());
 
 const rest = new REST({ version: '10' }).setToken(token);
-
+console.log("Registering slash commands...")
 rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
-	.then(() => console.log('Registered slash commands!'))
+	.then(() => console.log('Successfully registered!'))
 	.catch(console.error);
 
 client.on('interactionCreate', async interaction => {
@@ -52,3 +53,10 @@ client.on('interactionCreate', async interaction => {
 		await interaction.reply(`**Orphan Destroyer**\nCreated by BomberFish\nLicensed under the GNU Affero GPL v3. Source code available at https://github.com/BomberFish/orphan-destroyer`);
 	} 
 });
+
+client.once('reconnecting', () => {
+	console.log('Reconnecting...');
+ });
+ client.once('disconnect', () => {
+	console.log('Disconnected!');
+ });
